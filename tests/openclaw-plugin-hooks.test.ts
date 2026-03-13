@@ -30,15 +30,9 @@ interface RegisteredHook {
   opts?: { priority?: number };
 }
 
-interface RegisteredTypedHook {
-  hookName: string;
-  handler: (...args: unknown[]) => unknown;
-  opts?: { priority?: number };
-}
-
 function createMockApi() {
   const hooks: RegisteredHook[] = [];
-  const typedHooks: RegisteredTypedHook[] = [];
+  const typedHooks: RegisteredHook[] = [];
 
   const api = {
     registerHook(event: string, handler: (...args: unknown[]) => unknown, _meta: unknown) {

@@ -60,7 +60,7 @@ interface OpenClawPluginApi {
   /**
    * Register a typed lifecycle hook.
    * Supported names: "session_start", "before_compaction", "after_compaction",
-   * "before_prompt_build", "before_agent_start"
+   * "before_prompt_build"
    */
   on(
     event: string,
