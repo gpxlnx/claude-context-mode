@@ -157,12 +157,10 @@ export default function piExtension(pi: any): void {
 
   pi.on("tool_call", (event: any) => {
     try {
-      const toolName = String(event?.toolName ?? event?.tool_name ?? "").toLowerCase();
+      const toolName = String(event?.toolName ?? "").toLowerCase();
       if (toolName !== "bash") return;
 
-      const command = String(
-        event?.params?.command ?? event?.tool_input?.command ?? event?.input?.command ?? "",
-      );
+      const command = String(event?.input?.command ?? "");
       if (!command) return;
 
       const isBlocked = BLOCKED_BASH_PATTERNS.some((p) => p.test(command));

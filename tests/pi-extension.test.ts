@@ -219,43 +219,32 @@ describe("Pi Extension", () => {
       await registerPiExtension(api);
 
       const result = await api._trigger("tool_call", {
-        tool_name: "bash",
-        tool_input: { command: "curl https://example.com" },
+        toolName: "bash",
+        input: { command: "curl https://example.com" },
       });
 
-      // The routing module should return a modify/deny action for curl
-      // Pi extension should translate this to a block or modified command
       expect(result).toBeDefined();
-      // The result should indicate blocking or command replacement
-      if (result?.blocked !== undefined) {
-        expect(result.blocked).toBe(true);
-      } else if (result?.updatedInput !== undefined) {
-        expect(result.updatedInput.command).toContain("context-mode");
-      }
+      expect(result.block).toBe(true);
     });
 
     it("blocks bash with wget", async () => {
       await registerPiExtension(api);
 
       const result = await api._trigger("tool_call", {
-        tool_name: "bash",
-        tool_input: { command: "wget https://example.com -O out.html" },
+        toolName: "bash",
+        input: { command: "wget https://example.com -O out.html" },
       });
 
       expect(result).toBeDefined();
-      if (result?.blocked !== undefined) {
-        expect(result.blocked).toBe(true);
-      } else if (result?.updatedInput !== undefined) {
-        expect(result.updatedInput.command).toContain("context-mode");
-      }
+      expect(result.block).toBe(true);
     });
 
     it("allows bash with git status", async () => {
       await registerPiExtension(api);
 
       const result = await api._trigger("tool_call", {
-        tool_name: "bash",
-        tool_input: { command: "git status" },
+        toolName: "bash",
+        input: { command: "git status" },
       });
 
       // git status should NOT be blocked — result is undefined (passthrough)
@@ -269,8 +258,8 @@ describe("Pi Extension", () => {
       await registerPiExtension(api);
 
       const result = await api._trigger("tool_call", {
-        tool_name: "read",
-        tool_input: { file_path: "/src/app.ts" },
+        toolName: "read",
+        input: { file_path: "/src/app.ts" },
       });
 
       // Read should never be blocked — at most it gets routing guidance
